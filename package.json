@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js ",
     "dev": "nodemon index.js ",
     "build:ui": "rm -rf build && cd ../part02/parts/ && npm run build && xcopy -r build ../../backend",
     "deploy": "git push heroku main",
     "deploy:full": "git add . && git commit -m'Deploy' && git push && npm run deploy",
     "logs:prod": "heroku logs --tail",
+    "test": "jest --verbose",
     "lint": "eslint ."
   },
   "keywords": [],
