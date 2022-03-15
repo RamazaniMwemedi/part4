@@ -75,3 +75,12 @@ describe("Total likes", () => {
     expect(result).toBe(5);
   });
 });
+
+describe("For testing favorite likes", () => {
+  test("The most favorible blog", () => {
+    const result = listHelper.favoriteBlog(blogs);
+
+    expect(result).toEqual(result);
+    console.log(result);
+  });
+});
