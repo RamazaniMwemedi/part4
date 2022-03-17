@@ -84,3 +84,23 @@ describe("For testing favorite likes", () => {
     console.log(result);
   });
 });
+
+describe("Most blogs", () => {
+  test("should test the most bloger", () => {
+    const result = listHelper.mostBlogs(blogs);
+
+    expect(result).toEqual(result);
+
+    console.log(result);
+  });
+});
+
+describe("Famous", () => {
+  test("should test the most liked bloger", () => {
+    const result = listHelper.mostLikes(blogs);
+
+    expect(result).toEqual(result);
+
+    console.log(result);
+  });
+});
