@@ -4,24 +4,26 @@ const Person = require("../models/person");
 // HTTP GET Method
 // GET all persons apis
 
-personRouter.get("/", (req, res) => {
+personRouter.get("/", async (req, res, next) => {
   try {
-    Person.find({}).then((person) => {
-      res.json(person).status(200);
-    });
+    const person = await Person.find({});
+    res.json(person);
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 });
 // GET a single API
-personRouter.get("/:id", (req, res) => {
-  Person.findById(req.params.id).then((person) => {
-    res.json(person).status(200);
-  });
+personRouter.get("/:id", async (req, res, next) => {
+  try {
+    const person = await Person.findById(req.params.id);
+    res.json(person);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // HTTP POST Method
-personRouter.post("/", (req, res, next) => {
+personRouter.post("/", async (req, res, next) => {
   const { name, important } = req.body;
   const number = Number(req.body.number);
   const person = new Person({
@@ -30,42 +32,41 @@ personRouter.post("/", (req, res, next) => {
     important,
     date: new Date(),
   });
-  person
-    .save()
-    .then((person) => {
-      res.json(person);
-    })
-    .catch((error) => {
-      next(error);
-      console.log(req.body.number);
-    });
+
+  try {
+    const newPerson = await person.save();
+    res.json(newPerson);
+  } catch (error) {
+    next(error);
+  }
 });
 // HTTTP PUT method
-personRouter.put("/:id", (req, res, next) => {
+personRouter.put("/:id", async (req, res, next) => {
   const id = req.params.id;
   const person = {
     name: req.body.name,
     number: req.body.number,
   };
-  Person.findByIdAndUpdate(id, person, {
-    new: true,
-    runValidators: true,
-    context: "query",
-  })
-    .then((updatedPerson) => {
-      res.json(updatedPerson);
-    })
-    .catch((error) => {
-      console.log(error);
-      next(error);
+  try {
+    const updatedPerson = await Person.findByIdAndUpdate(id, person, {
+      new: true,
+      runValidators: true,
+      context: "query",
     });
+    res.json(updatedPerson);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // HTTP DELETE method
-personRouter.delete("/:id", (req, res, next) => {
-  Person.findByIdAndDelete(req.params.id)
-    .then(() => res.status(204).end())
-    .catch((error) => next(error));
+personRouter.delete("/:id", async (req, res, next) => {
+  try {
+    await Person.findByIdAndDelete(req.params.id);
+    res.sendStatus(204).end();
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = personRouter;
