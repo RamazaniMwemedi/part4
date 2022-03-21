@@ -45,12 +45,12 @@ const mostLikes = (blogs) => {
   const totalLikes = blogs
     .filter((blog) => blog.author === bloger[0])
     .map((blog) => blog.likes)
-    .reduce((initialValue, likes)=>(initialValue + likes),0)
+    .reduce((initialValue, likes) => initialValue + likes, 0);
   // const a = bloge
 
   const result = {
-    author: bloger,
-    likes:totalLikes,
+    author: bloger[0],
+    likes: totalLikes,
   };
   return result;
 };

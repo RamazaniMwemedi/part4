@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const config = require("../utils/config");
-const url = config.MONGODB_URI_BLOG;
+const url = config.MONGODB_URI_USER;
 const logger = require("../utils/logger");
 mongoose
   .connect(url)
@@ -11,14 +11,13 @@ mongoose
     logger.error(error);
   });
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
+const userSchema = mongoose.Schema({
+  name: String,
+  age: Number,
+  // friends: userSchema,
 });
 
-blogSchema.set("toJSON", {
+userSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -26,4 +25,4 @@ blogSchema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("Blog", blogSchema);
+module.exports = mongoose.model("User", userSchema);

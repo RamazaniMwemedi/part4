@@ -27,4 +27,28 @@ blogsRouter.post("/", (req, res, next) => {
     .catch((error) => next(error));
 });
 
+blogsRouter.delete("/:id", (req, res, next) => {
+  const id = req.params.id;
+  Blog.findByIdAndDelete(id)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((error) => next(error));
+});
+
+blogsRouter.put("/:id", (req, res, next) => {
+  const blog = {
+    title: req.body.title,
+  };
+  Blog.findByIdAndUpdate(req.params.id, blog, {
+    new: true,
+    runValidators: true,
+    context: "query",
+  })
+    .then((updatedBlog) => {
+      res.json(updatedBlog);
+    })
+    .catch((error) => next(error));
+});
+
 module.exports = blogsRouter;
