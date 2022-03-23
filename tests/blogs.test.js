@@ -55,12 +55,20 @@ const blogs = [
   },
 ];
 
-test("should get all the blogs in JSON format", async () => {
-  await api
-    .get("/api/blogs")
-    .expect(200)
-    .expect("Content-Type", /application\/json/);
-}, 1000000);
+describe("Exercise 4.8 - 4.12", () => {
+  test("should get all the blogs in JSON format", async () => {
+    await api.get("/api/blogs").expect("Content-Type", /application\/json/);
+  }, 1000000);
+
+  test("should check if a blog has an id", async () => {
+    const result = await api.get("/api/blogs");
+
+    const blogs = result._body;
+
+    expect(blogs.map((b) => b)).toBeDefined();
+    console.log(blogs);
+  });
+});
 
 test("Blogs", () => {
   const result = listHelper.dummy(blogs);
