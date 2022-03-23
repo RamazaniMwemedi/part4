@@ -4,6 +4,8 @@ const app = require("../app");
 const api = supertest(app);
 const listHelper = require("../utils/list_helper");
 
+// const Blogs = require("../models/blogs");
+
 const blogs = [
   {
     _id: "5a422a851b54a676234d17f7",
@@ -65,9 +67,25 @@ describe("Exercise 4.8 - 4.12", () => {
 
     const blogs = result._body;
 
-    expect(blogs.map((b) => b)).toBeDefined();
-    console.log(blogs);
+    expect(blogs.map((b) => b.id)).toBeDefined();
   });
+
+  test("should post a new blog", async () => {
+    const newBlog = {
+      _id: "5a422a851b54a676234d17f7",
+      title: "React patterns",
+      author: "Michael Chan",
+      url: "https://reactpatterns.com/",
+      likes: 7,
+      __v: 0,
+    };
+    const result = await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+    console.log(result);
+  }, 100000);
 });
 
 test("Blogs", () => {

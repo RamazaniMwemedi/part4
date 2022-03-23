@@ -13,7 +13,7 @@ beforeEach(async () => {
   const noteObjects = helper.initialNotes.map((note) => new Note(note));
   const promiseArray = noteObjects.map((note) => note.save());
   await Promise.all(promiseArray);
-}, 10000);
+}, 900000);
 test("notes should be returned as json", async () => {
   await api
     .get("/api/notes")
@@ -51,7 +51,7 @@ test("a valid note can be added", async () => {
 
   const contents = notesAtEnd.map((n) => n.content);
   expect(contents).toContain("async/await simplifies making async calls");
-}, 10000);
+}, 90000);
 
 test("there are two notes", async () => {
   const response = await api.get("/api/notes");

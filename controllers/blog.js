@@ -17,7 +17,7 @@ blogsRouter.post("/", async (req, res) => {
   });
 
   const result = await blog.save();
-  res.json(result);
+  res.status(201).json(result);
 });
 
 blogsRouter.delete("/:id", async (req, res) => {
