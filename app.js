@@ -15,10 +15,10 @@ logger.info("connecting to", config.MONGODB_URI_PERSON);
 mongoose
   .connect(config.MONGODB_URI_PERSON)
   .then(() => {
-    logger.info("connected to MongoDB");
+    //logger.info("connected to MongoDB");
   })
-  .catch((error) => {
-    logger.error("error connecting to MongoDB:", error.message);
+  .catch(() => {
+    //logger.error("error connecting to MongoDB:", error.message);
   });
 
 app.use(cors());

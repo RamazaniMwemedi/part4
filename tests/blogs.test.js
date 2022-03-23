@@ -1,3 +1,7 @@
+const mongoose = require("mongoose");
+const supertest = require("supertest");
+const app = require("../app");
+const api = supertest(app);
 const listHelper = require("../utils/list_helper");
 
 const blogs = [
@@ -51,6 +55,13 @@ const blogs = [
   },
 ];
 
+test("should get all the blogs in JSON format", async () => {
+  await api
+    .get("/api/blogs")
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+}, 1000000);
+
 test("Blogs", () => {
   const result = listHelper.dummy(blogs);
 
@@ -103,4 +114,8 @@ describe("Famous", () => {
 
     console.log(result);
   });
+});
+
+afterAll(() => {
+  mongoose.connection.close();
 });
