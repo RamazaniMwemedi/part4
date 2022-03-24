@@ -7,6 +7,14 @@ const toDelete = async (id) => {
   return result;
 };
 
+const toUpdate = async (id) => {
+  const blog = { likes: 76 };
+  const result = await api.put(`/api/blogs/${id}`).send(blog);
+
+  return result;
+};
+
 module.exports = {
   toDelete,
+  toUpdate,
 };

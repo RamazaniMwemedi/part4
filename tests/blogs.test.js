@@ -165,11 +165,19 @@ describe("Famous", () => {
   });
 });
 
-test("should delete a single blog", async () => {
-  const result = await forTestingBlog.toDelete("623c3e4405b79687501eefbc");
+describe("Deleting and updating a blog", () => {
+  test("should delete a single blog", async () => {
+    const result = await forTestingBlog.toDelete("623c3e4405b79687501eefbc");
 
-  expect(result.statusCode).toBe(204);
-}, 1000000);
+    expect(result.statusCode).toBe(204);
+  }, 1000000);
+
+  test("should update a blogs likes", async () => {
+    const result = await forTestingBlog.toUpdate("623c5e2cf5ca8382f1b76281");
+
+    expect(result.statusCode).toBe(200);
+  });
+});
 
 afterAll(() => {
   mongoose.connection.close();
