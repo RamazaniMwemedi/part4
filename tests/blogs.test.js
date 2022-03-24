@@ -79,13 +79,35 @@ describe("Exercise 4.8 - 4.12", () => {
       likes: 7,
       __v: 0,
     };
-    const result = await api
+    await api
       .post("/api/blogs")
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
-    console.log(result);
   }, 100000);
+
+  test("should check if the new blog has the like property else set it to 0", async () => {
+    const newBlog = {
+      _id: "5a422b3a1b54a676234d17f9",
+      title: "JFD",
+      author: "Name",
+      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+      // likes:12,
+      __v: 0,
+    };
+    const blog = {
+      title: newBlog.title,
+      author: newBlog.author,
+      url: newBlog.url,
+      likes: newBlog.likes || 0,
+    };
+    await api
+      .post("/api/blogs")
+      .send(blog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+  }, 1000000);
+
 });
 
 test("Blogs", () => {
