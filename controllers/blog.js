@@ -23,10 +23,11 @@ blogsRouter.post("/", async (req, res) => {
   res.status(201).json(result);
 });
 
-blogsRouter.delete("/:id", async (req, res) => {
+blogsRouter.delete("/:id", (req, res) => {
   const id = req.params.id;
-  const result = await Blog.findByIdAndDelete(id);
-  res.json(result);
+  Blog.findByIdAndDelete(id).then(() => {
+    res.sendStatus(204).end();
+  });
 });
 
 blogsRouter.put("/:id", async (req, res) => {

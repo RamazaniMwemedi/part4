@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
+
 const listHelper = require("../utils/list_helper");
+const forTestingBlog = require("../utils/for_testing_blog");
 
 // const Blogs = require("../models/blogs");
 
@@ -107,7 +109,6 @@ describe("Exercise 4.8 - 4.12", () => {
       .expect(201)
       .expect("Content-Type", /application\/json/);
   }, 1000000);
-
 });
 
 test("Blogs", () => {
@@ -163,6 +164,12 @@ describe("Famous", () => {
     console.log(result);
   });
 });
+
+test("should delete a single blog", async () => {
+  const result = await forTestingBlog.toDelete("623c3e4405b79687501eefbc");
+
+  expect(result.statusCode).toBe(204);
+}, 1000000);
 
 afterAll(() => {
   mongoose.connection.close();
