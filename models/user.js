@@ -1,20 +1,15 @@
 const mongoose = require("mongoose");
-const config = require("../utils/config");
-const url = config.MONGODB_URI_USER;
-const logger = require("../utils/logger");
-mongoose
-  .connect(url)
-  .then(() => {
-    logger.info("Connected to MongoDB");
-  })
-  .catch((error) => {
-    logger.error(error);
-  });
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
+  username: String,
   name: String,
-  age: Number,
-  // friends: userSchema,
+  passwordHash: String,
+  notes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Note",
+    },
+  ],
 });
 
 userSchema.set("toJSON", {
@@ -22,7 +17,11 @@ userSchema.set("toJSON", {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
+    // the passwordHash should not be revealed
+    delete returnedObject.passwordHash;
   },
 });
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;

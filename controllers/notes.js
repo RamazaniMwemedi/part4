@@ -1,10 +1,11 @@
 const notesRouter = require("express").Router();
+const User = require("../models/user");
 const Note = require("../models/note");
 
 // HTTP GET Requests
 // GET all persons from the database
 notesRouter.get("/", async (req, res) => {
-  const notes = await Note.find({});
+  const notes = await Note.find({}).populate("User", { username: 1, name: 1 });
   res.json(notes);
 });
 
@@ -18,23 +19,23 @@ notesRouter.get("/:id", async (req, res) => {
     res.status(404).end();
   }
 });
+notesRouter.post("/", async (request, response) => {
+  const body = request.body;
 
-notesRouter.post("/", async (req, res) => {
-  const body = req.body;
-  if (body.content === undefined) {
-    return res.status(400).json({
-      Error: "Body is undefined",
-    });
-  } else {
-    const note = new Note({
-      content: body.content,
-      important: body.important,
-      date: new Date(),
-    });
+  const user = await User.findById(body.userId);
 
-    const result = await note.save();
-    res.status(201).json(result);
-  }
+  const note = new Note({
+    content: body.content,
+    important: body.important === undefined ? false : body.important,
+    date: new Date(),
+    user: user._id,
+  });
+
+  const savedNote = await note.save();
+  user.notes = user.notes.concat(savedNote._id);
+  await user.save();
+
+  response.json(savedNote);
 });
 // HTTP PUT Request
 notesRouter.put("/:id", async (req, res) => {
