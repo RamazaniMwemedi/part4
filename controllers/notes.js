@@ -7,7 +7,7 @@ const Note = require("../models/note");
 // HTTP GET Requests
 // GET all persons from the database
 notesRouter.get("/", async (req, res) => {
-  const notes = await Note.find({}).populate("User", { username: 1, name: 1 });
+  const notes = await Note.find({});
   res.json(notes);
 });
 

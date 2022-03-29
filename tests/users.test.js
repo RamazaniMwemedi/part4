@@ -44,13 +44,13 @@ describe("when there is initially one user in db", () => {
 describe("Addind new user", () => {
   test("check that invalid users are not created", async () => {
     const user = {
-      name: "n",
-      username: "suyhj",
-      password: "h",
+      name: "Ramazani",
+      username: "rmr",
+      password: "rmrcl",
     };
 
     const result = await userHelper.toAddNew(user);
     console.log(result.text, result.status);
-    expect(result.status).toBe(406);
+    expect(result.status).toBe(201);
   }, 1000000);
 });
