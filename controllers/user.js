@@ -6,7 +6,7 @@ usersRouter.get("/", async (req, res) => {
   const users = await User.find({}).populate("notes", {
     content: 1,
     date: 1,
-  });
+  }).populate("blogs");
   res.json(users);
 });
 usersRouter.post("/", async (request, response) => {
