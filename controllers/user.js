@@ -10,6 +10,9 @@ usersRouter.post("/", async (request, response) => {
   const { username, name, password } = request.body;
   const existingUser = await User.findOne({ username });
 
+  if (password.length <= 3) {
+    return response.status(406).send({ error: "password must be greater than 3" });
+  }
   if (existingUser) {
     return response
       .json({
