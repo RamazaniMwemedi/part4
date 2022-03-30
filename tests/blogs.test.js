@@ -59,6 +59,14 @@ const blogs = [
   },
 ];
 
+var user = {};
+
+beforeEach(async () => {
+  const res = await api.post("/api/login").send({ username: "rmr", password: "rmrlc" });
+  user= res.body;
+  console.log("This is the user",user, "You got him" );
+});
+
 describe("Exercise 4.8 - 4.12", () => {
   test("should get all the blogs in JSON format", async () => {
     await api.get("/api/blogs").expect("Content-Type", /application\/json/);
@@ -85,6 +93,10 @@ describe("Exercise 4.8 - 4.12", () => {
       .post("/api/blogs")
       .send(newBlog)
       .expect(201)
+      .auth(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJtciIsImlkIjoiNjI0MmRmMWMyMDZhZDQ0OGJjNTFkNTI5IiwiaWF0IjoxNjQ4NjM0MjQxfQ.P1CLrDa6u6hsOp1wEdqLtiBVIq10RAlRqm38H_bFTwc",
+        { type: "bearer" }
+      )
       .expect("Content-Type", /application\/json/);
   }, 100000);
 
@@ -106,6 +118,10 @@ describe("Exercise 4.8 - 4.12", () => {
     await api
       .post("/api/blogs")
       .send(blog)
+      .auth(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJtciIsImlkIjoiNjI0MmRmMWMyMDZhZDQ0OGJjNTFkNTI5IiwiaWF0IjoxNjQ4NjM0MjQxfQ.P1CLrDa6u6hsOp1wEdqLtiBVIq10RAlRqm38H_bFTwc",
+        { type: "bearer" }
+      )
       .expect(201)
       .expect("Content-Type", /application\/json/);
   }, 1000000);
