@@ -7,10 +7,9 @@ const User = require("../models/user");
 
 blogsRouter.get("/", async (req, res) => {
   console.log(req.body);
-  const blog = await Blog.find({});
+  const blog = await Blog.find({}).populate("user", { username: 1, name: 1 });
   res.json(blog);
 });
-
 
 const getTokenFrom = (request) => {
   const authorization = request.get("authorization");
@@ -38,7 +37,7 @@ blogsRouter.post("/", async (req, res) => {
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
-    user: user._id
+    user: user._id,
   });
 
   const newBlog = await blog.save();
