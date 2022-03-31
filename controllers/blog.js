@@ -7,14 +7,6 @@ blogsRouter.get("/", async (req, res) => {
   res.json(blog);
 });
 
-// const getTokenFrom = (request) => {
-//   const authorization = request.get("authorization");
-//   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-//     return authorization.substring(7);
-//   }
-//   return null;
-// };
-
 blogsRouter.post("/", async (req, res) => {
   const body = req.body;
   const user = req.user;
@@ -36,11 +28,16 @@ blogsRouter.post("/", async (req, res) => {
   res.status(201).json(newBlog);
 });
 
-blogsRouter.delete("/:id", (req, res) => {
-  const id = req.params.id;
-  Blog.findByIdAndDelete(id).then(() => {
-    res.sendStatus(204).end();
-  });
+blogsRouter.delete("/:id", async (req, res) => {
+  const blog = await Blog.findById(req.params.id);
+  let blogUserId = JSON.stringify(blog.user);
+  let userId = JSON.stringify(req.user._id);
+  // console.log(req.user);
+  if (blogUserId === userId) {
+    await Blog.findByIdAndDelete(req.params.id);
+    res.status(204);
+  }
+  res.status(401);
 });
 
 blogsRouter.put("/:id", async (req, res) => {
