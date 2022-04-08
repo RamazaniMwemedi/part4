@@ -44,7 +44,6 @@ const getTokenFrom = (request) => {
 const tokenExtractor = (req, res, next) => {
   const token = getTokenFrom(req);
   req.token = token;
-  console.log("Token mid");
   next();
 };
 

@@ -5,6 +5,7 @@ const middleware = require("../utils/middleware");
 blogsRouter.get("/", async (req, res) => {
   const blog = await Blog.find({}).populate("user", { username: 1, name: 1 });
   res.json(blog);
+  console.log(req.user);
 });
 
 blogsRouter.post("/", middleware.userExtractor, async (req, res) => {
@@ -32,7 +33,8 @@ blogsRouter.delete("/:id", async (req, res) => {
   const blog = await Blog.findById(req.params.id);
   let blogUserId = JSON.stringify(blog.user);
   let userId = JSON.stringify(req.user._id);
-  // console.log(req.user);
+  console.log("User id", userId);
+  console.log("The user",req.user._id, "||", "The blog user", blogUserId);
   if (blogUserId === userId) {
     await Blog.findByIdAndDelete(req.params.id);
     res.status(204);
@@ -41,7 +43,7 @@ blogsRouter.delete("/:id", async (req, res) => {
 });
 
 blogsRouter.put("/:id", async (req, res) => {
-  const { title, author, url, likes , user } = req.body;
+  const { title, author, url, likes, user } = req.body;
   const blog = {
     title,
     author,
